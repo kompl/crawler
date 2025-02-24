@@ -1,0 +1,10 @@
+version: '3.8'
+
+services:
+  app:
+    image: my-scala-app
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3002:3002"  # Пробрасываем порт 3002 из контейнера на хост
