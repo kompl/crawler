@@ -1,6 +1,6 @@
 package com.crawler.core
 
-import cats.Parallel
+import cats.{Applicative, Parallel}
 import cats.effect.syntax.paralleln.*
 import cats.effect.{Concurrent, Resource, Sync}
 import cats.syntax.all.*
@@ -8,7 +8,7 @@ import com.crawler.common.{HTMLStreamParser, HTTPClientResource}
 import com.crawler.{HTMLStreamParserError, HTTPClientError, Logger}
 import eu.timepit.refined.api.Refined
 import eu.timepit.refined.string.Uri
-import org.http4s.{MediaType, Response, Uri => Http4sUri}
+import org.http4s.{MediaType, Response, Uri as Http4sUri}
 import fs2.Stream
 
 import scala.concurrent.ExecutionContext
@@ -45,8 +45,7 @@ object Crawler {
       parser: HTMLStreamParser[F],
       threadsCount: Int
   )(implicit
-      ecResource: Resource[F, ExecutionContext],
-      logger: Logger[F]
+      ecResource: Resource[F, ExecutionContext]
   ) extends Crawler[F] {
     def streamTitles(
         urls: List[String Refined Uri]
@@ -154,8 +153,7 @@ object Crawler {
         parser: HTMLStreamParser[F],
         threadsCount: Int
     )(implicit
-        ecResource: Resource[F, ExecutionContext],
-        logger: Logger[F]
+        ecResource: Resource[F, ExecutionContext]
     ): Crawler[F] = new Impl[F](client, parser, threadsCount)
   }
 }
