@@ -45,8 +45,7 @@ object Crawler {
       parser: HTMLStreamParser[F],
       threadsCount: Int
   )(implicit
-      ecResource: Resource[F, ExecutionContext],
-      logger: Logger[F]
+      ecResource: Resource[F, ExecutionContext]
   ) extends Crawler[F] {
     def streamTitles(
         urls: List[String Refined Uri]
@@ -154,8 +153,7 @@ object Crawler {
         parser: HTMLStreamParser[F],
         threadsCount: Int
     )(implicit
-        ecResource: Resource[F, ExecutionContext],
-        logger: Logger[F]
+        ecResource: Resource[F, ExecutionContext]
     ): Crawler[F] = new Impl[F](client, parser, threadsCount)
   }
 }
