@@ -12,6 +12,7 @@ import org.http4s.HttpApp
 
 import java.util.concurrent.Executors
 import scala.concurrent.ExecutionContext
+import scala.concurrent.duration.DurationInt
 
 object Main extends IOApp {
   type F[A] = IO[A]
@@ -61,6 +62,8 @@ object Main extends IOApp {
       BlazeServerBuilder[IO](_)
         .bindHttp(config.port.value, config.host.value)
         .withHttpApp(httpApp)
+        .withIdleTimeout(120.seconds)
+        .withResponseHeaderTimeout(90.seconds)
         .resource
         .void
     )

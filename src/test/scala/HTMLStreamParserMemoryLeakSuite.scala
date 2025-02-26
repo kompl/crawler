@@ -1,10 +1,10 @@
 import cats.effect.IO
-import fs2.Stream
-
-import java.nio.charset.StandardCharsets
 import com.crawler.common.HTMLStreamParser
+import fs2.Stream
 import org.scalatest.funsuite.AnyFunSuite
 import org.scalatest.matchers.should.Matchers
+
+import java.nio.charset.StandardCharsets
 
 class HTMLStreamParserMemoryLeakSuite extends AnyFunSuite with Matchers {
 
@@ -24,7 +24,8 @@ class HTMLStreamParserMemoryLeakSuite extends AnyFunSuite with Matchers {
     val html = prefix + hugeContent + suffix
 
     // Создаём поток байтов из строки
-    val stream: Stream[IO, Byte] = Stream.emits(html.getBytes(StandardCharsets.UTF_8)).covary[IO]
+    val stream: Stream[IO, Byte] =
+      Stream.emits(html.getBytes(StandardCharsets.UTF_8)).covary[IO]
     val parser = HTMLStreamParser.Impl.make[IO]
 
     // Измеряем память до обработки
@@ -41,7 +42,9 @@ class HTMLStreamParserMemoryLeakSuite extends AnyFunSuite with Matchers {
 
     // Проверяем, что разница в памяти не превышает допустимый порог (например, 5 МБ)
     val memoryDiff = memoryAfter - memoryBefore
-    info(s"Memory used before: $memoryBefore bytes, after: $memoryAfter bytes, diff: $memoryDiff bytes")
+    info(
+      s"Memory used before: $memoryBefore bytes, after: $memoryAfter bytes, diff: $memoryDiff bytes"
+    )
     memoryDiff should be < (5 * 1024 * 1024L)
   }
 }
